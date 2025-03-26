@@ -1,17 +1,30 @@
 <?php
 session_start();
 
+if (!isset($_SESSION["username"])) {
+    echo "You must set a username.";
+    exit;
+}
+
 $username = $_SESSION["username"];
 
-$vote = $_POST["color"];
+if (empty($username)) {
+    echo "Empty username.";
+    exit;
+}
 
+if (!isset($_POST["color"])) {
+    echo "No color selected.";
+    exit;
+}
+
+$vote = $_POST["color"];
 $votesFile = "votes.txt";
 
 // read votes
 $votes = [];
 if (file_exists($votesFile)) {
-    $fileContent = file_get_contents($votesFile);
-    $lines = explode("\n", trim($fileContent));
+    $lines = file($votesFile, FILE_IGNORE_NEW_LINES);
     foreach ($lines as $line) {
         list($user, $color) = explode(":", $line);
         $votes[$user] = $color;
@@ -20,18 +33,18 @@ if (file_exists($votesFile)) {
 
 // check if user already voted
 if (isset($votes[$username])) {
-    echo "$username already voted for " . htmlspecialchars($votes[$username]);
+    echo "$username already voted for " . $votes[$username];
 } else {
-    // store the new vote
+    // store the vote
     $votes[$username] = $vote;
 
     // save votes to the file
-    $fileHandle = fopen($votesFile, "w");
+    $file = fopen($votesFile, "w");
     foreach ($votes as $user => $color) {
-        fwrite($fileHandle, "$user:$color\n");
+        fwrite($file, "$user:$color\n");
     }
-    fclose($fileHandle);
+    fclose($file);
 
-    echo "$username voted for " . htmlspecialchars($vote);
+    echo "$username voted for " . $vote;
 }
 

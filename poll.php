@@ -1,18 +1,20 @@
 <?php
 session_start();
 
-$_SESSION["username"] = $_POST["username"];
+if (!isset($_SESSION["username"])) {
+    if (!empty($_POST["username"])) {
+        $_SESSION["username"] = $_POST["username"];
+    } else {
+        echo "No username set.";
+        exit;
+    }
+}
+
 $username = $_SESSION["username"];
 ?>
 
 <html>
 <body>
-
-<?php
-
-//echo "$username";
-?><br>
-
 
 <form action='display.php' method='POST'>
     Favorite Color?:
@@ -23,4 +25,4 @@ $username = $_SESSION["username"];
 </form>
 
 </body>
-</html><?php
+</html>
