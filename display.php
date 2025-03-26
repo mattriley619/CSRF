@@ -1,5 +1,18 @@
 <?php
 session_start();
+$CSRF = false;
+
+if(!isset($_SESSION["username"])){
+    echo "No user session.";
+    exit;
+}
+
+if($CSRF){
+    if(!isset($_POST["csrf_token"], $_SESSION["csrf_token"]) || $_POST["csrf_token"] !== $_SESSION["csrf_token"]){
+        echo "CSRF token does not match.";
+        exit;
+    }
+}
 
 $username = $_SESSION["username"];
 $vote = $_POST["color"];
