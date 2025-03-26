@@ -1,15 +1,7 @@
 <?php
 session_start();
 
-if (!isset($_SESSION["username"])) {
-    if (!empty($_POST["username"])) {
-        $_SESSION["username"] = $_POST["username"];
-    } else {
-        echo "No username set.";
-        exit;
-    }
-}
-
+$_SESSION["username"] = $_POST["username"];
 $username = $_SESSION["username"];
 ?>
 

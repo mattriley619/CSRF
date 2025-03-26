@@ -1,23 +1,7 @@
 <?php
 session_start();
 
-if (!isset($_SESSION["username"])) {
-    echo "You must set a username.";
-    exit;
-}
-
 $username = $_SESSION["username"];
-
-if (empty($username)) {
-    echo "Empty username.";
-    exit;
-}
-
-if (!isset($_POST["color"])) {
-    echo "No color selected.";
-    exit;
-}
-
 $vote = $_POST["color"];
 $votesFile = "votes.txt";
 
